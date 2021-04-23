@@ -36,4 +36,39 @@
 ```js
   redirect: "/recommend",
 ```
+
 ## 2-5 获取轮播图接口数据
+
+问题
+rt
+backend/router.js
+这个文件中的接口 以及接口信息
+backend/sign.js
+这个签名文件是第三方网站（qq 音乐）提供的，
+是在哪找的，如果我想用别的第三方接口，我应该在哪找，
+我只找见个 QMplayer 的那个 player.js，但是这个好像直接就是一个控件
+
+### src/server/base.js
+
+### src/server/recommend.js
+
+```js
+axios
+  .get("url", { params })
+  .then((res) => {
+    // 处理逻辑
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+```
+
+### vue.config.js
+
+```js
+  devServer: {
+    before(app) {
+      registerRouter(app);
+    },
+  },
+```

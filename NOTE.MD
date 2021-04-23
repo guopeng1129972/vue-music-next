@@ -26,3 +26,14 @@
   name="viewport"
 />
 ```
+
+## 2-4 Tab 组件实现
+
+### src/router/index.js
+
+默认重定向
+
+```js
+  redirect: "/recommend",
+```
+## 2-5 获取轮播图接口数据

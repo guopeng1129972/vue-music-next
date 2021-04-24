@@ -1,9 +1,9 @@
 <template>
   <div class="slider" ref="rootRef">
     <div class="slider-group">
-      <div class="slider-page" v-for="item in slider" :key="item.id">
-        <a href="item.link">
-          <img src="item.pic" />
+      <div class="slider-page" v-for="item in sliders" :key="item.id">
+        <a :href="item.link">
+          <img :src="item.pic" />
         </a>
       </div>
     </div>
@@ -20,7 +20,7 @@
 
 <script>
 import { ref } from "vue";
-import { useSlider } from "./use-slider";
+import useSlider from "./use-slider";
 export default {
   name: "slider",
   props: {

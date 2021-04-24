@@ -865,6 +865,25 @@
     "@babel/helper-validator-identifier" "^7.12.11"
     to-fast-properties "^2.0.0"
 
+"@better-scroll/core@^2.3.0":
+  version "2.3.0"
+  resolved "https://r.cnpmjs.org/@better-scroll/core/download/@better-scroll/core-2.3.0.tgz#5f05580db3b3f424909183e14215c514374d7e87"
+  integrity sha1-XwVYDbOz9CSQkYPhQhXFFDdNfoc=
+  dependencies:
+    "@better-scroll/shared-utils" "^2.3.0"
+
+"@better-scroll/shared-utils@^2.3.0":
+  version "2.3.0"
+  resolved "https://r.cnpmjs.org/@better-scroll/shared-utils/download/@better-scroll/shared-utils-2.3.0.tgz#7f80b198d73a2844f7b4287d197e18d8bc032d6e"
+  integrity sha1-f4CxmNc6KET3tCh9GX4Y2LwDLW4=
+
+"@better-scroll/slide@^2.3.0":
+  version "2.3.0"
+  resolved "https://r.cnpmjs.org/@better-scroll/slide/download/@better-scroll/slide-2.3.0.tgz#eb3386bbfbbb3b46d04beb277aa7ec570f4963f0"
+  integrity sha1-6zOGu/u7O0bQS+sneqfsVw9JY/A=
+  dependencies:
+    "@better-scroll/core" "^2.3.0"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.nlark.com/@cnakazawa/watch/download/@cnakazawa/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"

@@ -48,9 +48,9 @@ backend/sign.js
 是在哪找的，如果我想用别的第三方接口，我应该在哪找，
 我只找见个 QMplayer 的那个 player.js，但是这个好像直接就是一个控件
 
-### src/server/base.js
+### src/service/base.js
 
-### src/server/recommend.js
+### src/service/recommend.js
 
 ```js
 axios
@@ -141,6 +141,21 @@ export useSlider
 
 获取数据和展示
 
-## src/server/search.js
+## src/service/search.js
 
 这 4 个文件我是根据同理推出来的获取的接口内容
+
+# 2-9 歌单列表实现&滚动组件的封装
+
+```html
+<!-- 定义如何计算一个元素的总宽度和总高度 -->
+<!-- border-box 将border计算在内，content-box 将内容计算在内 -->
+box-sizing: border-box;
+<!-- align-items属性将所有直接子节点上的align-self值设置为一个组。 -->
+<!-- align-self属性设置项目在其包含块中在交叉轴方向上的对齐方式。 -->
+<!-- align-items: center; 所有子元素居中显示  -->
+align-items: center;
+flex: 0 0 60px;
+```
+## src/components/base/scroll
+创建滚动组件

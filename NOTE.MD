@@ -154,8 +154,27 @@ box-sizing: border-box;
 <!-- align-items属性将所有直接子节点上的align-self值设置为一个组。 -->
 <!-- align-self属性设置项目在其包含块中在交叉轴方向上的对齐方式。 -->
 <!-- align-items: center; 所有子元素居中显示  -->
-align-items: center;
-flex: 0 0 60px;
+align-items: center; flex: 0 0 60px;
 ```
+
 ## src/components/base/scroll
+
 创建滚动组件
+
+# 2-10 图片懒加载的实现
+
+## src/views/recommend.vue
+
+就是引入库（全局引入） 使用的话 v-lazy 选择需要懒加载的图片
+
+```html
+<img v-lazy="item.pic" width="60" height="60" />
+```
+
+loading 参数 传入默认替代的图片
+
+```js
+  .use(lazyPlugin, {
+    loading: require("@/assets/images/default.png"),
+  })
+```

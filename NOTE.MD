@@ -178,3 +178,33 @@ loading 参数 传入默认替代的图片
     loading: require("@/assets/images/default.png"),
   })
 ```
+
+# 2-11 v-loading 自定义指令的开发
+
+## src/components/base/loading
+
+创建自定义组件 loading
+
+## src/main.js
+
+注册到全局
+
+```js
+  .directive("loading", loadingDirective)
+```
+
+## src/views/recommend.vue
+
+在组件中使用
+
+```html
+<div class="recommend" v-loading="loading"></div>
+```
+
+```js
+  computed: {
+    loading() {
+      return !this.sliders.length && !this.albums.length;
+    },
+  },
+```

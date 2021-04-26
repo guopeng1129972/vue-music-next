@@ -208,3 +208,10 @@ loading 参数 传入默认替代的图片
     },
   },
 ```
+# 2-12 v-loading 自定义指令的优化
+
+## src/assets/js/dom.js
+将操作dom的方法提出来写
+## src/components/base/loading/directive.js
+添加自定义文字的
+## src/views/recommend.vue

@@ -236,8 +236,74 @@ loading 参数 传入默认替代的图片
 # 3-2 IndexList 组件基础滚动功能实现
 
 ## src/views/singer.vue
-引入 IndexList组件
+
+引入 IndexList 组件
+
 ## src/components/base/loading/loading.vue
+
 修改默认值，因为很多地方会用到
+
 ## src/components/base/index-list/index-list.vue
+
 构建基础组件 列表组件
+
+# 3-3 歌手列表固定标题实现（上）
+
+## src/components/base/index-list/index-list.vue
+
+1.创建 fixedTitle 实例 .fixed 样式 2.引入 useFixed 组件 传入 ref="groupRef"
+3.setup 阶段 引入 groupRef, onScroll 4.重写 scroll 组件 添加 :probe-type="3" @scroll="onScroll" 属性 方法
+
+## src/components/base/index-list/use-fixed.js
+
+1. hight += list[i].clientHeight;获取元素高度
+2. 自定义组件中的 watch 使用，监听 props.data 的变换
+
+```js
+watch(
+  () => props.data,
+  async () => {
+    await nextTick();
+    calculate();
+  }
+);
+```
+
+3. nextTick
+   将回调推迟到下一个 DOM 更新周期之后执行。在更改了一些数据以等待 DOM 更新后立即使用它。
+4. scrollY 返回的值向下为负值
+   scrollY.value = -pos.y;
+
+## src/components/base/scroll/scroll.vue
+
+```js
+  props: {
+    //1.base-scroll 组件的probeType属性 大于0 会添加scroll事件
+    probeType: {
+      type: Number,
+      default: 0,
+    },
+  },
+  //2.vue3中emits事件 按照这样的方式
+  emits: ["scroll"],
+  setup(props, { emit }) {
+    const rootRef = ref(null);
+    useScroll(rootRef, props, emit);
+    return {
+      rootRef,
+    };
+  },
+```
+
+## src/components/base/scroll/use-scroll.js
+
+1. useScroll 传值添加 emit
+2. 当 probeType>0 监听 scroll 事件，提交当前 pos 对象
+
+```js
+if (options.probeType > 0) {
+  scrollVal.on("scroll", (pos) => {
+    emit("scroll", pos);
+  });
+}
+```

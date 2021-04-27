@@ -208,17 +208,36 @@ loading 参数 传入默认替代的图片
     },
   },
 ```
+
 # 2-12 v-loading 自定义指令的优化
 
 ## src/assets/js/dom.js
-将操作dom的方法提出来写
+
+将操作 dom 的方法提出来写
+
 ## src/components/base/loading/directive.js
+
 添加自定义文字的
+
 ## src/views/recommend.vue
 
 # 3-1 歌手列表数据获取
+
 主要就是 按照预定的接口 获取歌手信息
+
 ## src/views/singer.vue
+
 注意异步获取的生命周期的时间点 created
+
 ## src/views/singer.vue
+
 配置前端接口
+
+# 3-2 IndexList 组件基础滚动功能实现
+
+## src/views/singer.vue
+引入 IndexList组件
+## src/components/base/loading/loading.vue
+修改默认值，因为很多地方会用到
+## src/components/base/index-list/index-list.vue
+构建基础组件 列表组件

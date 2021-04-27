@@ -307,3 +307,29 @@ if (options.probeType > 0) {
   });
 }
 ```
+
+# 3-4 【讨论题】歌手列表固定标题实现
+
+## 题目描述：
+Vue 3 的 Composition API 与 Options API 有何区别，在什么场景下使用。
+提示： 需要了解 Composition API 的设计背景，可以去 GitHub 对应的 RFC 中去查找，
+并且思考它们之间在使用中的一些差别。
+
+### 1.逻辑组织
+碎片化的 Options api 在组件复用的过程中，从根组件来看，当需要修改一个功能时，需要跳来跳去改
+Composition API 在逻辑组织方面的优势，以后修改一个属性功能的时候，只需要跳到控制该属性的方法中即可 
+### 2.逻辑复用
+主要体现在 mixin
+当我们一个组件混入大量不同的 mixins 的时候
+会存在两个非常明显的问题：
+命名冲突
+数据来源不清晰
+使用 Composition api 引入就会很清晰，因为标明了来源
+
+## 小结
+1. 在逻辑组织和逻辑复用方面，Composition API 是优于 Options API 
+2. 因为 Composition API 几乎是函数，会有更好的类型推断。
+3. Composition API 对 tree-shaking 友好，代码也更容易压缩
+4. Composition API 中见不到 this 的使用，减少了 this 指向不明的情况 
+5. 如果是小型组件，可以继续使用 Options API，也是十分友好的
+https://www.cnblogs.com/houxianzhou/p/14368919.html

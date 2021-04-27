@@ -1,8 +1,12 @@
-<template>
-歌手页面
-</template>
+<template>歌手页面</template>
 <script>
-export default {};
+import { getSingerList } from "@/service/singer";
+export default {
+  name: "singer",
+  async created() {
+    const result = await getSingerList();
+    console.log(result);
+  },
+};
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

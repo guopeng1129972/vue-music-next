@@ -215,3 +215,10 @@ loading 参数 传入默认替代的图片
 ## src/components/base/loading/directive.js
 添加自定义文字的
 ## src/views/recommend.vue
+
+# 3-1 歌手列表数据获取
+主要就是 按照预定的接口 获取歌手信息
+## src/views/singer.vue
+注意异步获取的生命周期的时间点 created
+## src/views/singer.vue
+配置前端接口

@@ -1,5 +1,5 @@
 import { get } from "./base";
 
-export function getSearch() {
+export function getSingerList() {
   return get("/api/getSingerList");
 }

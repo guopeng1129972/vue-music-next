@@ -17,7 +17,7 @@ export default {
   async created() {
     const result = await getSingerList();
     this.singers = result.singers;
-    console.log(result);
+    // console.log(result);
   },
 };
 </script>

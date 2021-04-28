@@ -333,3 +333,21 @@ Composition API 在逻辑组织方面的优势，以后修改一个属性功能�
 4. Composition API 中见不到 this 的使用，减少了 this 指向不明的情况 
 5. 如果是小型组件，可以继续使用 Options API，也是十分友好的
 https://www.cnblogs.com/houxianzhou/p/14368919.html
+
+# 3-5 歌手列表固定标题实现（中）
+
+
+
+## src/components/base/index-list/index-list.vue
+1. 添加   fixedTitle 并且 当fixedTitle<0的时候不显示
+2. 修改 groupRef的错误绑定
+## src/components/base/index-list/use-fixed.js
+1. 添加对fixedTitle 的计算属性computed  
+2. 添加 对scrollY 的watch属性
+3. watch 的props.data属性在构建组件之前都是undefined，在await nextTick 之后才能监听到
+```js
+ watch(
+    () => props.data,)
+  // 赋值操作
+const currentGroup = props.data[currentIndex.value];
+```

@@ -351,3 +351,10 @@ https://www.cnblogs.com/houxianzhou/p/14368919.html
   // 赋值操作
 const currentGroup = props.data[currentIndex.value];
 ```
+# 3-6 歌手列表固定标题实现（下）
+
+## src/components/base/index-list/use-shortcut.js
+1. 添加useShortcut
+2. 添加 shortcut 模板与css样式
+## src/components/base/index-list/use-fixed.js
+1. 分析之后，需求需要显示currentIndex，在use-fixed中已经计算过 抛出

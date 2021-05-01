@@ -3,10 +3,11 @@ import { ref, watch, computed, nextTick } from "vue";
 export default function useFixed(props) {
   // fixedTitle
   const groupRef = ref(null);
-  let listHeights = ref([]);
-  let scrollY = ref(0);
-  let currentIndex = ref(0);
- 
+  const listHeights = ref([]);
+  const scrollY = ref(0);
+  const currentIndex = ref(0);
+  const distance = ref(0);
+  const TITLE_HEIGHT = 30;
   const fixedTitle = computed(() => {
     if (scrollY.value < 0) {
       return;
@@ -15,6 +16,17 @@ export default function useFixed(props) {
     const currentGroup = props.data[currentIndex.value];
     // console.log("currentGroup", currentGroup);
     return currentGroup ? currentGroup.title : "";
+  });
+  const fixedStyle = computed(() => {
+    const distanceVal = distance.value;
+    const diff =
+      distanceVal > 0 && distanceVal < TITLE_HEIGHT
+        ? distanceVal - TITLE_HEIGHT
+        : 0;
+    // console.log(diff);
+    return {
+      transform: `translate3d(0,${diff}px,0)`,
+    };
   });
   watch(
     () => props.data,
@@ -32,6 +44,7 @@ export default function useFixed(props) {
       const heightBottom = listHeightsVal[i + 1];
       if (newY >= heightTop && newY <= heightBottom) {
         currentIndex.value = i;
+        distance.value = heightBottom - newY;
       }
     }
   });
@@ -54,5 +67,7 @@ export default function useFixed(props) {
     groupRef,
     onScroll,
     fixedTitle,
+    fixedStyle,
+    currentIndex,
   };
 }

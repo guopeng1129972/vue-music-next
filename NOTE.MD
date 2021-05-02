@@ -405,3 +405,11 @@ scroll.scrollToElement(targetEl, 0);
 3. 将 groupRef 传入 useShortcut 记录 :data-index="index" 用于绑定
 4. 导出 onShortcutTouchStart 方法,scrollRef dom 结构
 5. 绑定 ref="scrollRef"
+
+# 3-8 歌手列表快速导航入口实现（03）
+## src/components/base/index-list/use-shortcut.js
+1. 添加 onShortcutTouchMove 方法
+2. 整合到方法 scrollTo 
+## src/components/base/index-list/index-list.vue
+1. 绑定 引入 onShortcutTouchMove 方法
+onShortcutTouchMove

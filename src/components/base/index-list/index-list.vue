@@ -17,10 +17,11 @@
     <div
       class="shortcut"
       @touchstart.stop.prevent="onShortcutTouchStart"
-      @touchmove.stop.prevent
+      @touchmove.stop.prevent="onShortcutTouchMove"
       @touchend.stop.prevent
-      @mousedown.stop.prevent="onShortcutTouchStart"
-      @mousemove.stop.prevent
+      @mousedown.stop.prevent
+      @mouseover.stop.prevent="onShortcutTouchStart"
+      @mousemove.stop.prevent="onShortcutTouchMove"
       @mouseup.stop.prevent
     >
       <ul>
@@ -61,10 +62,12 @@ export default {
       fixedStyle,
       currentIndex,
     } = useFixed(props);
-    const { shortcutList, onShortcutTouchStart, scrollRef } = useShortcut(
-      props,
-      groupRef
-    );
+    const {
+      shortcutList,
+      onShortcutTouchStart,
+      scrollRef,
+      onShortcutTouchMove,
+    } = useShortcut(props, groupRef);
     return {
       groupRef,
       onScroll,
@@ -72,6 +75,7 @@ export default {
       fixedStyle,
       currentIndex,
       shortcutList,
+      onShortcutTouchMove,
       onShortcutTouchStart,
       scrollRef,
     };

@@ -311,14 +311,18 @@ if (options.probeType > 0) {
 # 3-4 【讨论题】歌手列表固定标题实现
 
 ## 题目描述：
+
 Vue 3 的 Composition API 与 Options API 有何区别，在什么场景下使用。
 提示： 需要了解 Composition API 的设计背景，可以去 GitHub 对应的 RFC 中去查找，
 并且思考它们之间在使用中的一些差别。
 
 ### 1.逻辑组织
+
 碎片化的 Options api 在组件复用的过程中，从根组件来看，当需要修改一个功能时，需要跳来跳去改
-Composition API 在逻辑组织方面的优势，以后修改一个属性功能的时候，只需要跳到控制该属性的方法中即可 
+Composition API 在逻辑组织方面的优势，以后修改一个属性功能的时候，只需要跳到控制该属性的方法中即可
+
 ### 2.逻辑复用
+
 主要体现在 mixin
 当我们一个组件混入大量不同的 mixins 的时候
 会存在两个非常明显的问题：
@@ -327,34 +331,77 @@ Composition API 在逻辑组织方面的优势，以后修改一个属性功能�
 使用 Composition api 引入就会很清晰，因为标明了来源
 
 ## 小结
-1. 在逻辑组织和逻辑复用方面，Composition API 是优于 Options API 
+
+1. 在逻辑组织和逻辑复用方面，Composition API 是优于 Options API
 2. 因为 Composition API 几乎是函数，会有更好的类型推断。
 3. Composition API 对 tree-shaking 友好，代码也更容易压缩
-4. Composition API 中见不到 this 的使用，减少了 this 指向不明的情况 
+4. Composition API 中见不到 this 的使用，减少了 this 指向不明的情况
 5. 如果是小型组件，可以继续使用 Options API，也是十分友好的
-https://www.cnblogs.com/houxianzhou/p/14368919.html
+   https://www.cnblogs.com/houxianzhou/p/14368919.html
 
 # 3-5 歌手列表固定标题实现（中）
 
-
-
 ## src/components/base/index-list/index-list.vue
-1. 添加   fixedTitle 并且 当fixedTitle<0的时候不显示
-2. 修改 groupRef的错误绑定
+
+1. 添加 fixedTitle 并且 当 fixedTitle<0 的时候不显示
+2. 修改 groupRef 的错误绑定
+
 ## src/components/base/index-list/use-fixed.js
-1. 添加对fixedTitle 的计算属性computed  
-2. 添加 对scrollY 的watch属性
-3. watch 的props.data属性在构建组件之前都是undefined，在await nextTick 之后才能监听到
+
+1. 添加对 fixedTitle 的计算属性 computed
+2. 添加 对 scrollY 的 watch 属性
+3. watch 的 props.data 属性在构建组件之前都是 undefined，在 await nextTick 之后才能监听到
+
 ```js
- watch(
-    () => props.data,)
-  // 赋值操作
+watch(() => props.data);
+// 赋值操作
 const currentGroup = props.data[currentIndex.value];
 ```
+
 # 3-6 歌手列表固定标题实现（下）
 
+# 3-7 歌手列表快速导航入口实现（01）
+
 ## src/components/base/index-list/use-shortcut.js
-1. 添加useShortcut
-2. 添加 shortcut 模板与css样式
+
+1. 添加 useShortcut
+2. 添加 shortcut 模板与 css 样式
+
 ## src/components/base/index-list/use-fixed.js
-1. 分析之后，需求需要显示currentIndex，在use-fixed中已经计算过 抛出
+
+1. 分析之后，需求需要显示 currentIndex，在 use-fixed 中已经计算过 抛出
+
+# 3-8 歌手列表快速导航入口实现（02）
+
+## src/components/base/scroll/scroll.vue
+
+1. 导出在 useScroll 定义的 scroll 的 ref
+
+## src/components/base/scroll/use-scroll.js
+
+1. 导出定义的 scroll 的 ref
+
+## src/components/base/index-list/use-shortcut.js
+
+1. 引入 scroll 组件的 ref
+2. 写 onShortcutTouchStart 方法
+3. bast-scroll 组件方法，跳转到滑动的那一块
+
+```js
+scroll.scrollToElement(targetEl, 0);
+```
+
+## src/components/base/index-list/index-list.vue
+
+1. 阻止 touchstart touchmove touchend 的默认事件事件 重写为 onShortcutTouchStart
+
+```html
+@touchstart.stop.prevent="onShortcutTouchStart" @touchmove.stop.prevent
+@touchend.stop.prevent @mousedown.stop.prevent="onShortcutTouchStart"
+@mousemove.stop.prevent @mouseup.stop.prevent
+```
+
+2. 使用使用 h5 的 dataset 绑定 index :data-index="index"
+3. 将 groupRef 传入 useShortcut 记录 :data-index="index" 用于绑定
+4. 导出 onShortcutTouchStart 方法,scrollRef dom 结构
+5. 绑定 ref="scrollRef"

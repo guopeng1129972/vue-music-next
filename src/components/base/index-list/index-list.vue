@@ -1,5 +1,5 @@
 <template>
-  <Scroll class="index-list" :probe-type="3" @scroll="onScroll">
+  <Scroll class="index-list" :probe-type="3" @scroll="onScroll" ref="scrollRef">
     <ul ref="groupRef">
       <li v-for="group in data" :key="group.title" class="group">
         <h2 class="title">{{ group.title }}</h2>
@@ -14,11 +14,20 @@
     <div class="fixed" v-if="fixedTitle" :style="fixedStyle">
       <div class="fixed-title">{{ fixedTitle }}</div>
     </div>
-    <div class="shortcut">
+    <div
+      class="shortcut"
+      @touchstart.stop.prevent="onShortcutTouchStart"
+      @touchmove.stop.prevent
+      @touchend.stop.prevent
+      @mousedown.stop.prevent="onShortcutTouchStart"
+      @mousemove.stop.prevent
+      @mouseup.stop.prevent
+    >
       <ul>
         <li
           v-for="(item, index) in shortcutList"
           :key="item"
+          :data-index="index"
           class="item"
           :class="{ current: currentIndex === index }"
         >
@@ -52,7 +61,10 @@ export default {
       fixedStyle,
       currentIndex,
     } = useFixed(props);
-    const { shortcutList } = useShortcut(props);
+    const { shortcutList, onShortcutTouchStart, scrollRef } = useShortcut(
+      props,
+      groupRef
+    );
     return {
       groupRef,
       onScroll,
@@ -60,6 +72,8 @@ export default {
       fixedStyle,
       currentIndex,
       shortcutList,
+      onShortcutTouchStart,
+      scrollRef,
     };
   },
 };

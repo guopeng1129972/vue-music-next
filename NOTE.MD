@@ -406,10 +406,50 @@ scroll.scrollToElement(targetEl, 0);
 4. 导出 onShortcutTouchStart 方法,scrollRef dom 结构
 5. 绑定 ref="scrollRef"
 
-# 3-8 歌手列表快速导航入口实现（03）
+# 3-9 歌手列表快速导航入口实现（03）
+
 ## src/components/base/index-list/use-shortcut.js
+
 1. 添加 onShortcutTouchMove 方法
-2. 整合到方法 scrollTo 
+2. 整合到方法 scrollTo
+
 ## src/components/base/index-list/index-list.vue
+
 1. 绑定 引入 onShortcutTouchMove 方法
-onShortcutTouchMove
+
+# 4-1 歌手详情页歌曲列表数据获取
+
+## src/service/singer.js
+
+1. 添加获取歌手信息的接口 传值 { mid: singer.mid }
+
+## src/router/index.js
+
+1. 添加 singer 的二级接口根据传值进行跳转 path: ":id",
+
+## src/components/base/index-list/index-list.vue
+
+1. 添加点击事件 @click="onItemClick(item)"
+2. 创建 emits:['select'];emit("select", item);
+3. 抛出 onItemClick
+
+## src/views/singer-detail.vue
+
+1. 创建歌手信息的 view
+2. 引入获取信息的接口 异步获取信息
+
+## src/views/singer.vue
+
+1. 接收 IndexList emit 过来的 select 的值（singer），保存到当前的 data(selectedSinger)
+2. 定义 selectSinger 方法 跳转路由
+
+```js
+    selectSinger(singer) {
+      // console.log(2)
+      this.selectedSinger = singer;
+      this.$router.push({
+        path: `/singer/${singer.mid}`,
+      });
+    },
+```
+3. 其实也没跳转 就是router-view的z-index为10 大于 当前 css显示

@@ -11,9 +11,8 @@ export default function useShortcut(props, groupRef) {
 
   const touch = {};
   function onShortcutTouchStart(e) {
-    const anchorIndex = e.target.dataset.index
-      ? parseInt(e.target.dataset.index)
-      : "EOF";
+    const anchorIndex = parseInt(e.target.dataset.index);
+
     // console.log("anchorIndex", anchorIndex);
     touch.y1 = e.pageY || e.touches[0].pageY;
     touch.anchorIndex = anchorIndex; //简单的闭包技巧
@@ -27,14 +26,14 @@ export default function useShortcut(props, groupRef) {
     scrollTo(anchorIndex);
   }
   function scrollTo(index) {
-    if (index === "EOF") {
+    if (Number.isNaN(index) === true || index == void 0) {
       return;
     }
     index = Math.max(0, Math.min(shortcutList.value.length - 1, index));
-    console.log(index);
+    // console.log(index);
     const targetEl = groupRef.value.children[index];
     const scroll = scrollRef.value.scroll;
-    scroll.scrollToElement(targetEl, 0);
+    scroll.scrollToElement(targetEl, 1100);
   }
   return {
     shortcutList,

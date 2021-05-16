@@ -452,4 +452,38 @@ scroll.scrollToElement(targetEl, 0);
       });
     },
 ```
-3. 其实也没跳转 就是router-view的z-index为10 大于 当前 css显示
+
+3. 其实也没跳转 就是 router-view 的 z-index 为 10 大于 当前 css 显示
+
+# 4-2 歌手详情页批量获取歌曲 url
+
+## src/service/song.js
+
+添加获取歌曲 url 的接口请求
+
+```js
+export function getSongsUrl(songs) {
+  // 如果歌手请求不到歌曲，返回歌手
+  if (!songs.length) {
+    return Promise.resolve(songs);
+  }
+  return get("/api/getSongsUrl", {
+    mid: songs.map((song) => {
+      return song.mid;
+    }),
+  }).then((result) => {
+    const map = result.map;
+    return songs
+      .map((song) => {
+        song.url = map[song.mid];
+        return song;
+      })
+      .filter((song) => {
+        return song.url.indexOf("vkey") > -1;
+      });
+  });
+}
+```
+
+## src/views/singer-detail.vue
+- 引入请求的接口，请求数据

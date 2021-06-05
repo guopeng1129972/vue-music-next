@@ -1,22 +1,38 @@
 <template>
-  <div class="singer-detail"></div>
+  <div class="singer-detail">
+    <musicList :songs="songs" :pic="pic" :title="title"></musicList>
+  </div>
 </template>
 
 <script>
 import { getSingerDetail } from "@/service/singer";
-import { getSongsUrl } from "@/service/song";
+import { processSongs } from "@/service/song";
+import musicList from "@/components/music-list/music-list.vue";
 export default {
   name: "singer-detail",
+  components: { musicList },
   props: {
     singer: {
       typeof: Object,
     },
   },
+  data() {
+    return {
+      songs: [],
+    };
+  },
+  computed: {
+    pic() {
+      return this.singer && this.singer.pic;
+    },
+    title() {
+      return this.singer && this.singer.name;
+    },
+  },
   async created() {
     const result = await getSingerDetail(this.singer);
-    const songs = await getSongsUrl(result.songs);
-    console.log("result", result);
-    console.log("songs", songs);
+    // console.log(this.singer);
+    this.songs = await processSongs(result.songs);
   },
 };
 </script>

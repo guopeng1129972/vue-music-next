@@ -487,3 +487,17 @@ export function getSongsUrl(songs) {
 
 ## src/views/singer-detail.vue
 - 引入请求的接口，请求数据
+
+# 4-3 歌手详情页 MusicList 组件基础代码编写
+
+box-sizing 属性允许您以特定的方式定义匹配某个区域的特定元素。
+
+例如，假如您需要并排放置两个带边框的框，可通过将 box-sizing 设置为 "border-box"。这可令浏览器呈现出带有指定宽度和高度的框，并把边框和内边距放入框中。
+
+
+- src/service/song.js
+定义接口文件
+- src/components/music-list/music-list.vue 封装歌曲列表组件
+- src/components/base/song-list/song-list.vue 封装歌曲组件
+- src/views/singer-detail.vue
+  引入歌曲组件

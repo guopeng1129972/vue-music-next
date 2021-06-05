@@ -1,6 +1,6 @@
 import { get } from "./base";
 
-export function getSongsUrl(songs) {
+export function processSongs(songs) {
   // 如果歌手请求不到歌曲，返回歌手
   if (!songs.length) {
     return Promise.resolve(songs);

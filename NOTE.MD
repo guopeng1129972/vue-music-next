@@ -501,3 +501,15 @@ box-sizing 属性允许您以特定的方式定义匹配某个区域的特定元
 - src/components/base/song-list/song-list.vue 封装歌曲组件
 - src/views/singer-detail.vue
   引入歌曲组件
+# 4-4 歌手详情页 MusicList 组件功能交互优化（01）
+## 解决不可以滑动的问题
+- 设置list的默认高度，是由父级决定的
+- 在src/components/music-list/music-list.vue中设置data return imageHeight
+- 同理设置Scroll组件的:style="scrollStyle"为computed的scrollStyle返回值
+- 绑定bgImage的ref,在mounted的时候，设置imageHeight = this.$refs.bgImage.clientHeight;
+- 这时候触发computed的scrollStyle，设置偏移量，让可以滑动
+## 添加返回按钮的事件
+- 给当前元素绑定@click="goBack"，在methods设置goBack方法为this.$router.back();
+## 添加load组件
+- 设置scroll的v-loading="loading"，loading属性是props传来的布尔值
+- 在singer-detail设置loading值传入，created阶段获取导数据之后，将loading置位false

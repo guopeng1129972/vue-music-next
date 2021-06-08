@@ -486,6 +486,7 @@ export function getSongsUrl(songs) {
 ```
 
 ## src/views/singer-detail.vue
+
 - 引入请求的接口，请求数据
 
 # 4-3 歌手详情页 MusicList 组件基础代码编写
@@ -494,22 +495,56 @@ box-sizing 属性允许您以特定的方式定义匹配某个区域的特定元
 
 例如，假如您需要并排放置两个带边框的框，可通过将 box-sizing 设置为 "border-box"。这可令浏览器呈现出带有指定宽度和高度的框，并把边框和内边距放入框中。
 
-
 - src/service/song.js
-定义接口文件
+  定义接口文件
 - src/components/music-list/music-list.vue 封装歌曲列表组件
 - src/components/base/song-list/song-list.vue 封装歌曲组件
 - src/views/singer-detail.vue
   引入歌曲组件
+
 # 4-4 歌手详情页 MusicList 组件功能交互优化（01）
+
 ## 解决不可以滑动的问题
-- 设置list的默认高度，是由父级决定的
-- 在src/components/music-list/music-list.vue中设置data return imageHeight
-- 同理设置Scroll组件的:style="scrollStyle"为computed的scrollStyle返回值
-- 绑定bgImage的ref,在mounted的时候，设置imageHeight = this.$refs.bgImage.clientHeight;
-- 这时候触发computed的scrollStyle，设置偏移量，让可以滑动
+
+- 设置 list 的默认高度，是由父级决定的
+- 在 src/components/music-list/music-list.vue 中设置 data return imageHeight
+- 同理设置 Scroll 组件的:style="scrollStyle"为 computed 的 scrollStyle 返回值
+- 绑定 bgImage 的 ref,在 mounted 的时候，设置 imageHeight = this.$refs.bgImage.clientHeight;
+- 这时候触发 computed 的 scrollStyle，设置偏移量，让可以滑动
+
 ## 添加返回按钮的事件
-- 给当前元素绑定@click="goBack"，在methods设置goBack方法为this.$router.back();
-## 添加load组件
-- 设置scroll的v-loading="loading"，loading属性是props传来的布尔值
-- 在singer-detail设置loading值传入，created阶段获取导数据之后，将loading置位false
+
+- 给当前元素绑定@click="goBack"，在 methods 设置 goBack 方法为 this.$router.back();
+
+## 添加 load 组件
+
+- 设置 scroll 的 v-loading="loading"，loading 属性是 props 传来的布尔值
+- 在 singer-detail 设置 loading 值传入，created 阶段获取导数据之后，将 loading 置位 false
+
+# 4-5 歌手详情页 MusicList 组件功能交互优化（02)
+
+## 实现向上滚动到标题位置停止
+
+- 需要通过监听 scroll 的`@scroll`事件，使用 baster-scroll 的 api 设置`:probe-type="3"`监听
+  滚动事件`@scroll="onScroll"`定义滚动方法
+- 定义 data`scrollY`保存当前的 pos.y
+- 滚动方法` this.scrollY = -pos.y;`返回当前滚动的 y 值取反
+- 还需要获取`maxTranslateY`来监听当前可以滚动的范围，这个值在组件挂载之后
+  获取背景最高值减去标题高度就可以获得`this.maxTranslateY = this.imageHeight - RESERVED_HEIGHT;`
+- 同理在计算属性回调方法的时候设置值，默认的图片初始值为
+  `let paddingTop = "70%";let height = 0;`当` if (scrollY > this.maxTranslateY)`
+  就是向上滑动完可滑动区域，让`paddingTop = 0;height = `${RESERVED_HEIGHT}px`;`,
+  在计算属性的最后返回这些值。
+
+## 处理下拉列表时，将图片拉大，这块需要用到 2d 变换
+
+```js
+let scale = 1;
+if (scrollY < 0) {
+  // 当下拉的时候scrollY<0,计算scrollY与this.imageHeight的比值的绝对值，求得相对于
+  // 之前未变化的比值
+  scale = 1 + Math.abs(scrollY / this.imageHeight);
+}
+// 返回
+transform: `scale(${scale}) 
+```

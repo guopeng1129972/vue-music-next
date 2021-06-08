@@ -7,7 +7,13 @@
     <div class="bg-image" :style="bgImageStyle" ref="bgImage">
       <div class="filter"></div>
     </div>
-    <scroll class="list" :style="scrollStyle" v-loading="loading">
+    <scroll
+      class="list"
+      :style="scrollStyle"
+      v-loading="loading"
+      :probe-type="3"
+      @scroll="onScroll"
+    >
       <div class="song-list-wrapper">
         <song-list :songs="songs"></song-list>
       </div>
@@ -18,6 +24,8 @@
 <script>
 import scroll from "../base/scroll/scroll.vue";
 import songList from "../base/song-list/song-list.vue";
+
+const RESERVED_HEIGHT = 40;
 export default {
   components: { scroll, songList },
   props: {
@@ -34,13 +42,36 @@ export default {
   data() {
     return {
       imageHeight: 0,
+      scrollY: 0,
+      maxTranslateY: 0,
     };
   },
 
   computed: {
     bgImageStyle() {
+      const scrollY = this.scrollY;
+      let zIndex = 0;
+      let paddingTop = "70%";
+      let height = 0;
+      let translateZ = 0; //处理ios兼容问题
+      //  console.log(scrollY,this.maxTranslateY);
+      if (scrollY > this.maxTranslateY) {
+        zIndex = 10;
+        paddingTop = 0;
+        height = `${RESERVED_HEIGHT}px`;
+        translateZ = 1; //处理ios兼容问题
+      }
+
+      let scale = 1;
+      if (scrollY < 0) {
+        scale = 1 + Math.abs(scrollY / this.imageHeight);
+      }
       return {
+        zIndex,
+        paddingTop,
+        height,
         backgroundImage: `url(${this.pic})`,
+        transform: `scale(${scale}) translateZ(${translateZ}px)`, //处理ios兼容问题
       };
     },
     scrollStyle() {
@@ -51,10 +82,14 @@ export default {
   },
   mounted() {
     this.imageHeight = this.$refs.bgImage.clientHeight;
+    this.maxTranslateY = this.imageHeight - RESERVED_HEIGHT;
   },
   methods: {
     goBack() {
       this.$router.back();
+    },
+    onScroll(pos) {
+      this.scrollY = -pos.y;
     },
   },
 };
@@ -95,8 +130,6 @@ export default {
     width: 100%;
     transform-origin: top;
     background-size: cover;
-    padding-top: 70%;
-    height: 0;
     .filter {
       position: absolute;
       top: 0;
@@ -111,6 +144,7 @@ export default {
     bottom: 0;
     width: 100%;
     z-index: 0;
+    // overflow: hidden; //控制滚动是否隐藏掉不隐藏就在原地滚，隐藏就会到顶隐藏
     .song-list-wrapper {
       padding: 20px 30px;
       background: $color-background;

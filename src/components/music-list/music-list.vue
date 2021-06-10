@@ -5,7 +5,7 @@
     </div>
     <h1 class="title">{{ title }}</h1>
     <div class="bg-image" :style="bgImageStyle" ref="bgImage">
-      <div class="filter"></div>
+      <div class="filter" :style="filterStyle"></div>
     </div>
     <scroll
       class="list"
@@ -77,6 +77,19 @@ export default {
     scrollStyle() {
       return {
         top: `${this.imageHeight}px`,
+      };
+    },
+    filterStyle() {
+      let blur = 0;
+      let scrollY = this.scrollY;
+      let imageHeight = this.imageHeight;
+      if (scrollY >= 0) {
+        blur =
+          Math.min(this.maxTranslateY / imageHeight, scrollY / imageHeight) *
+          20;
+      }
+      return {
+        backdropFilter: `blur(${blur}px)`,
       };
     },
   },

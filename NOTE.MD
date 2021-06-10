@@ -546,5 +546,29 @@ if (scrollY < 0) {
   scale = 1 + Math.abs(scrollY / this.imageHeight);
 }
 // 返回
-transform: `scale(${scale}) 
+transform: `scale(${scale})
+```
+
+# 4-6 歌手详情页 MusicList 组件功能交互优化（03)
+
+同理给 filterdiv 加上 style,计算属性添加 filterStyle
+
+```html
+<div class="filter" :style="filterStyle"></div>
+```
+
+```js
+    filterStyle() {
+      let blur = 0;
+      let scrollY = this.scrollY;
+      let imageHeight = this.imageHeight;
+      if (scrollY >= 0) {
+        blur =
+          Math.min(this.maxTranslateY / imageHeight, scrollY / imageHeight) *
+          20;
+      }
+      return {
+        backdropFilter: `blur(${blur}px)`,
+      };
+    },
 ```

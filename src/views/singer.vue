@@ -7,6 +7,8 @@
 <script>
 import { getSingerList } from "@/service/singer";
 import IndexList from "@/components/base/index-list/index-list";
+import storage from "good-storage";
+import { SINGER_KEY } from "../assets/js/constant";
 export default {
   name: "singer",
   components: { IndexList },
@@ -24,10 +26,14 @@ export default {
   methods: {
     selectSinger(singer) {
       // console.log(2)
-      this.selectedSinger = singer;
+      this.selectedSinger = singer; 
+      this.cacheSinger(singer); //调用cacheSinger，缓存singer
       this.$router.push({
         path: `/singer/${singer.mid}`,
       });
+    },
+    cacheSinger(singer) { //定义cacheSinger，用于缓存singer
+      storage.session.set(SINGER_KEY, singer);
     },
   },
 };

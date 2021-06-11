@@ -572,3 +572,14 @@ transform: `scale(${scale})
       };
     },
 ```
+
+# 4-7 歌手详情页支持详情页刷新
+
+- 安装读取本地存储的插件 good-storage
+  > 封装了 localstorage,sessionstorage 的一个插件库，
+  > 为什么要使用？因为需要将对象存入 sessionstorage，插件封装了这个过程
+  > `yarn add good-storage`
+- 创建定义常量的文件
+  > src/assets/js/constant.js
+- src/views/singer.vue
+  > 在 selectSinger 的同时，将 singer 对象存入当前 sessionStorage

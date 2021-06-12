@@ -612,4 +612,28 @@ https://cn.vuejs.org/v2/guide/transitions.html
   </transition>
 </router-view>
 ```
+
 这个过渡效果的东西还很多，需要好好学习，而且很酷
+
+# 4-9 歌手详情页边界情况处理
+
+主要就是处理数据获取到之后，不满足情况的错误处理
+
+- 创建 no-result 组件，创建 create-loading-like-directive 类组件处理类似于 loading 组件一些组件
+
+```js
+// v-no-result:[noResultText]="noResult" 引入全局定义的自定义组件
+    data(){
+      //设置noResultText的props
+    noResultText: {
+      type: String,
+      default: "抱歉，没有找到可播放的歌曲",
+    },}
+    computed: {
+      // 设置当loading结束，并且返回没值的这种情况
+    noResult() {
+      return !this.loading && !this.songs.length;
+    },}
+```
+- no-result.vue与loading类似的设计
+- src/assets/js/create-loading-like-directive.js 就是之前directive的组件提取公共元素

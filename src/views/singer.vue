@@ -1,7 +1,11 @@
 <template>
   <div class="singer" v-loading="!singers.length">
     <IndexList :data="singers" @select="selectSinger"></IndexList>
-    <router-view :singer="selectedSinger"></router-view>
+    <router-view v-slot="{ Component }">
+      <transition appear name="slide">
+        <component :is="Component" :singer="selectedSinger"></component>
+      </transition>
+    </router-view>
   </div>
 </template>
 <script>
@@ -26,13 +30,14 @@ export default {
   methods: {
     selectSinger(singer) {
       // console.log(2)
-      this.selectedSinger = singer; 
+      this.selectedSinger = singer;
       this.cacheSinger(singer); //调用cacheSinger，缓存singer
       this.$router.push({
         path: `/singer/${singer.mid}`,
       });
     },
-    cacheSinger(singer) { //定义cacheSinger，用于缓存singer
+    cacheSinger(singer) {
+      //定义cacheSinger，用于缓存singer
       storage.session.set(SINGER_KEY, singer);
     },
   },

@@ -583,3 +583,33 @@ transform: `scale(${scale})
   > src/assets/js/constant.js
 - src/views/singer.vue
   > 在 selectSinger 的同时，将 singer 对象存入当前 sessionStorage
+
+# 4-8 歌手详情页路由过渡效果实现
+
+https://cn.vuejs.org/v2/guide/transitions.html
+
+## 通过 vue-transition 实现
+
+- 添加动画,根据使用的 id（slide），添加当前的动画，并且可以使用第三方动画库
+  > src/assets/scss/base.scss
+
+```css
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
+// transitions
+.slide-enter-from,
+.slide-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
+```
+
+```html
+<router-view v-slot="{ Component }">
+  <transition appear name="slide">
+    <component :is="Component" :singer="selectedSinger"></component>
+  </transition>
+</router-view>
+```
+这个过渡效果的东西还很多，需要好好学习，而且很酷

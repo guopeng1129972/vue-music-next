@@ -11,16 +11,16 @@ html {
 .g-relative {
   position: relative;
 }
-
-// .slide-enter-active,
-// .slide-leave-active {
-//   transition: all 0.3s
-// }
-
-// .slide-enter-from,
-// .slide-leave-to {
-//   transform: translate3d(100%, 0, 0)
-// }
+// vue 内置组件 transitions，用于在transitions的时候管理这些css
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s
+}
+// transitions
+.slide-enter-from,
+.slide-leave-to {
+  transform: translate3d(100%, 0, 0)
+}
 
 // .list-enter-active,
 // .list-leave-active {

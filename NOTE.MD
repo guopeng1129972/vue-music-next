@@ -635,5 +635,28 @@ https://cn.vuejs.org/v2/guide/transitions.html
       return !this.loading && !this.songs.length;
     },}
 ```
-- no-result.vue与loading类似的设计
-- src/assets/js/create-loading-like-directive.js 就是之前directive的组件提取公共元素
+
+- no-result.vue 与 loading 类似的设计
+- src/assets/js/create-loading-like-directive.js 就是之前 directive 的组件提取公共元素
+
+# 4-10 歌手详情页歌曲列表点击以及 vuex 的应用
+
+主要就是使用 vuex 进行数据管理，记录播放列表
+
+- 先设置 state
+  > 设置播放的状态
+- 设置不同的播放模式`PLAY_MODE`
+- 设置 getters
+  > return currentSong 计算当前需要播放的歌曲
+- mutations 设置所有更改 state 的回调方法
+- actions 设置回调方法`selectPlay`确定触发条件
+- index vuex 插件
+
+```js
+strict: debug, //严格模式
+  //在线上开发使用createLogger创建一个插件，如果不是就不用
+  plugins: debug ? [createLogger()] : [],
+```
+
+- song-list 点击触发`selectItem(song, index)`,`selectItem`执行`emit`,`select`
+  给`music-list`,触发`@select="selectItem"`,`selectItem`触发`this.selectPlay({ lis`的回调钩子方法，完成派发

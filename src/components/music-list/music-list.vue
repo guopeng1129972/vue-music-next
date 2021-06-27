@@ -5,6 +5,12 @@
     </div>
     <h1 class="title">{{ title }}</h1>
     <div class="bg-image" :style="bgImageStyle" ref="bgImage">
+      <div class="play-btn-wrapper" :style="playBtnStyle">
+        <div v-show="songs.length > 0" class="play-btn" @click="random">
+          <i class="icon-play"></i>
+          <span class="text">随机播放全部</span>
+        </div>
+      </div>
       <div class="filter" :style="filterStyle"></div>
     </div>
     <scroll
@@ -57,6 +63,13 @@ export default {
     // 设置当loading结束，并且返回没值的这种情况
     noResult() {
       return !this.loading && !this.songs.length;
+    },
+    playBtnStyle() {
+      let display = "";
+      if (this.scrollY >= this.maxTranslateY) {
+        display = "none";
+      }
+      return { display };
     },
     bgImageStyle() {
       const scrollY = this.scrollY;
@@ -117,7 +130,10 @@ export default {
     selectItem({ /* song */ index }) {
       this.selectPlay({ list: this.songs, index });
     },
-    ...mapActions(["selectPlay"]),
+    random() {
+      this.randomPlay(this.songs);
+    },
+    ...mapActions(["selectPlay", "randomPlay"]),
   },
 };
 </script>
@@ -157,6 +173,34 @@ export default {
     width: 100%;
     transform-origin: top;
     background-size: cover;
+    .play-btn-wrapper {
+      position: absolute;
+      bottom: 20px;
+      z-index: 10;
+      width: 100%;
+      .play-btn {
+        box-sizing: border-box;
+        width: 135px;
+        padding: 7px 0;
+        margin: 0 auto;
+        text-align: center;
+        border: 1px solid $color-theme;
+        color: $color-theme;
+        border-radius: 100px;
+        font-size: 0;
+      }
+      .icon-play {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+        font-size: $font-size-medium-x;
+      }
+      .text {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: $font-size-small;
+      }
+    }
     .filter {
       position: absolute;
       top: 0;

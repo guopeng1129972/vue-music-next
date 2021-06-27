@@ -660,3 +660,20 @@ strict: debug, //严格模式
 
 - song-list 点击触发`selectItem(song, index)`,`selectItem`执行`emit`,`select`
   给`music-list`,触发`@select="selectItem"`,`selectItem`触发`this.selectPlay({ lis`的回调钩子方法，完成派发
+
+# 4-11 歌手详情页歌曲列表实现随机播放
+
+- 添加工具函数 shuffle（洗牌方法） src/assets/js/util.js
+- 添加播放的 action randomPlay
+- 添加播放按钮 触发方法
+
+```html
+<div class="play-btn-wrapper" :style="playBtnStyle">
+  <div v-show="songs.length > 0" class="play-btn" @click="random">
+    <i class="icon-play"></i>
+    <span class="text">随机播放全部</span>
+  </div>
+</div>
+```
+
+- 滚动触发隐藏按钮方法 playBtnStyle

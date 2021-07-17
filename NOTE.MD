@@ -677,3 +677,11 @@ strict: debug, //严格模式
 ```
 
 - 滚动触发隐藏按钮方法 playBtnStyle
+
+# 5-1 播放器基础样式及歌曲播放功能开发
+
+- 创建`player.vue`组件 挂载在app组件上
+- 添加 getters的 `currentSong`的容错处理
+
+
+

@@ -680,8 +680,83 @@ strict: debug, //严格模式
 
 # 5-1 播放器基础样式及歌曲播放功能开发
 
-- 创建`player.vue`组件 挂载在app组件上
-- 添加 getters的 `currentSong`的容错处理
+- 创建`player.vue`组件 挂载在 app 组件上
+- 添加 getters 的 `currentSong`的容错处理
 
+# 5-2 播放器播放按钮的暂停与播放逻辑开发
 
+- 添加播放和暂停按钮
 
+```html
+<div class="bottom">
+  <div class="operators">
+    <div class="icon i-left">
+      <i class="icon-sequence"></i>
+    </div>
+    <div class="icon i-left">
+      <i @click="prev" class="icon-prev"></i>
+    </div>
+    <div @pause="pause" class="icon i-center">
+      <i @click="togglePlay" :class="playIcon"></i>
+    </div>
+    <div class="icon i-right">
+      <i @click="next" class="icon-next"></i>
+    </div>
+    <div class="icon i-right">
+      <i class="icon-not-favorite"> </i>
+    </div>
+  </div>
+</div>
+```
+
+```js
+// 同理 获取播放状态
+const playing = computed(() => store.state.playing);
+const playlist = computed(() => store.state.playlist);
+```
+
+- 当前播放歌曲是由 currentindex 决定的
+- 添加切换的方法
+
+```js
+// 监听播放的状态 按钮切换触发播放暂停
+watch(playing, (newPlaying) => {
+  const audioEl = audioRef.value;
+  newPlaying ? audioEl.play() : audioEl.pause();
+});
+function togglePlay() {
+  store.commit("setPlayingState", !playing.value);
+}
+// 默认的暂停事件
+function pause() {
+  store.commit("setPlayingState", false);
+}
+```
+
+# 5-3 播放器歌曲前进与后退逻辑开发
+
+```js
+// 后退代码 前进同理
+function prev() {
+  const list = playlist.value;
+  if (!list.length) {
+    return;
+  }
+  if (list.length === 1) {
+    loop();
+  } else {
+    let index =
+      currentIndex.value - 1 === -1 ? list.length - 1 : currentIndex.value - 1;
+    store.commit("setCurrentIndex", index);
+    if (!playing.value) {
+      store.commit("setPlayingState", true);
+    }
+  }
+}
+// 当只有一首歌曲的时候循环播放处理
+function loop() {
+  const audioEl = audioRef.value;
+  audioEl.currentTime = 0;
+  audioEl.play();
+}
+```

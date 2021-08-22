@@ -16,13 +16,13 @@
           <div class="icon i-left">
             <i class="icon-sequence"></i>
           </div>
-          <div class="icon i-left">
+          <div class="icon i-left" :class="disableCls">
             <i @click="prev" class="icon-prev"></i>
           </div>
-          <div @pause="pause" class="icon i-center">
+          <div @pause="pause" class="icon i-center" :class="disableCls">
             <i @click="togglePlay" :class="playIcon"></i>
           </div>
-          <div class="icon i-right">
+          <div class="icon i-right" :class="disableCls">
             <i @click="next" class="icon-next"></i>
           </div>
           <div class="icon i-right">
@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      <audio ref="audioRef"></audio>
+      <audio ref="audioRef" @canplay="ready" @error="error"></audio>
     </div>
   </div>
 </template>
@@ -43,6 +43,7 @@ export default {
   setup() {
     const store = useStore();
     const audioRef = ref(null);
+    const songReady = ref(false);
     const fullScreen = computed(() => store.state.fullScreen);
     // 注意获取的时候是getters
     const currentSong = computed(() => store.getters.currentSong);
@@ -54,27 +55,30 @@ export default {
     });
     // 获取当前歌曲
     const currentIndex = computed(() => store.state.currentIndex);
+    const disableCls = computed(() => (songReady.value ? "" : "disable"));
     watch(currentSong, (newSong) => {
       if (!newSong.id || !newSong.url) {
         return;
       }
+      songReady.value = false;
       const audioEl = audioRef.value;
       audioEl.src = newSong.url;
       audioEl.play();
     });
     watch(playing, (newPlaying) => {
+      if (!songReady.value) {
+        return;
+      }
       const audioEl = audioRef.value;
       newPlaying ? audioEl.play() : audioEl.pause();
-    });
-    watch(currentIndex, (newCurrentIndex) => {
-      const audioEl = audioRef.value;
-      newCurrentIndex;
-      audioEl.play();
     });
     function goback() {
       store.commit("setFullScreen", false);
     }
     function togglePlay() {
+      if (!songReady.value) {
+        return;
+      }
       store.commit("setPlayingState", !playing.value);
     }
     function pause() {
@@ -82,7 +86,7 @@ export default {
     }
     function next() {
       const list = playlist.value;
-      if (!list.length) {
+      if (!songReady.value || !list.length) {
         return;
       }
       if (list.length === 1) {
@@ -98,7 +102,7 @@ export default {
     }
     function prev() {
       const list = playlist.value;
-      if (!list.length) {
+      if (!songReady.value || !list.length) {
         return;
       }
       if (list.length === 1) {
@@ -119,6 +123,17 @@ export default {
       audioEl.currentTime = 0;
       audioEl.play();
     }
+    function ready() {
+      // 如果不是第一次 直接return
+      if (songReady.value) {
+        return;
+      }
+      songReady.value = true;
+    }
+    // 错误的时候，也要更改songReady上的
+    function error() {
+      songReady.value = true;
+    }
     return {
       currentSong,
       fullScreen,
@@ -129,6 +144,9 @@ export default {
       pause,
       next,
       prev,
+      ready,
+      disableCls,
+      error,
     };
   },
 };

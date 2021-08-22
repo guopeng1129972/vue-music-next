@@ -760,3 +760,8 @@ function loop() {
   audioEl.play();
 }
 ```
+
+# 5-4 播放器 DOM 异常错误处理
+页面报错的原因，是因为两个watcher监听（一个是播放歌曲的play，一个是），
+歌曲的url加载歌曲的是个过程，第一次的时候，还没有加载出来，所以报错
+解决的方法就是监听 audio标签的 canplay 阶段 error 阶段
